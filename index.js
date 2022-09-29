@@ -30,21 +30,20 @@ app.get("/api/persons/:id", (request, response) => {
 })
 
 app.post("/api/persons", (request, response) => {
-  if (request.body["name"] && request.body["phone"]) {
-    if (persons.find((p) => p.name === request.body.name)) {
-      return response.status(409).json({ error: "this person already exists!" })
-    }
-    const newPerson = {
-      name: request.body.name,
-      phone: request.body.phone,
-      id: Math.floor(Math.random() * 99999999999999999),
-    }
-    persons.push(newPerson)
-
-    return response.json(newPerson)
-  } else {
+  if (!request.body["name"] || !request.body["phone"]) {
     return response.status(400).json({ error: "invalid arguments. Should be 'name' and 'phone'" })
+  } else if (persons.find((p) => p.name === request.body.name)) {
+    return response.status(409).json({ error: "this person already exists!" })
   }
+  
+  const newPerson = {
+    name: request.body.name,
+    phone: request.body.phone,
+    id: Math.floor(Math.random() * 99999999999999999),
+  }
+  persons.push(newPerson)
+
+  return response.json(newPerson)
 })
 
 app.delete("/api/persons/:id", (request, response) => {
