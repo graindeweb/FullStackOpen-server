@@ -8,6 +8,17 @@ app.get("/api/persons", (request, response) => {
   response.json(store.persons)
 })
 
+app.get("/api/persons/:id", (request, response) => {
+    const id = Number(request.params.id)
+    const person = store.persons.find(p => p.id === id)
+
+    if (person) {
+        response.json(person)
+    } else {
+        response.status(404).end()
+    }
+})
+
 app.get("/info", (request, response) => {
   const now = new Date()
   response.send(

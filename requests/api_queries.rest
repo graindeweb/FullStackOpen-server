@@ -5,3 +5,13 @@ http://localhost:3001/api/persons
 
 # Get infos
 http://localhost:3001/info
+
+### 
+
+# Get Person infos
+http://localhost:3001/api/persons/2
+
+###
+
+# Get unknown person infos
+http://localhost:3001/api/persons/78964
