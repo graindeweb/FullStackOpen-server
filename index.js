@@ -31,11 +31,11 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   if (!request.body["name"] || !request.body["phone"]) {
-    return response.status(400).json({ error: "invalid arguments. Should be 'name' and 'phone'" })
+    return response.status(400).json({ error: "Invalid arguments: 'name' and 'phone' required!" })
   } else if (persons.find((p) => p.name === request.body.name)) {
-    return response.status(409).json({ error: "this person already exists!" })
+    return response.status(409).json({ error: "name must be unique!" })
   }
-  
+
   const newPerson = {
     name: request.body.name,
     phone: request.body.phone,
