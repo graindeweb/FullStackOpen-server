@@ -13,5 +13,15 @@ http://localhost:3001/api/persons/2
 
 ###
 
-# Get unknown person infos
+# Get unknown person infos (404)
 http://localhost:3001/api/persons/78964
+
+### 
+
+# Delete person (idempotent)
+delete http://localhost:3001/api/persons/2
+
+###
+
+# Delete unknown person (idempotent)
+delete http://localhost:3001/api/persons/852741
