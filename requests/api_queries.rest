@@ -48,3 +48,8 @@ Content-type: application/json
 {
     "name": "John Doe"
 }
+
+###
+
+# Unknown endpoint
+GET http://localhost:3001/api/nobody

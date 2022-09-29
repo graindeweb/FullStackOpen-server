@@ -1,11 +1,15 @@
 const express = require("express")
+const morgan = require("morgan")
 
 const store = require("./store/persons.json")
 let persons = store.persons
+
 const app = express()
 
+app.use(morgan('tiny'))
 app.use(express.json())
 
+/** Get infos about phonebook */
 app.get("/info", (request, response) => {
   const now = new Date()
   response.send(
@@ -14,10 +18,12 @@ app.get("/info", (request, response) => {
   )
 })
 
+/** Get all persons in phonebook */
 app.get("/api/persons", (request, response) => {
   response.json(persons)
 })
 
+/** Get person's details */
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find((p) => p.id === id)
@@ -29,6 +35,7 @@ app.get("/api/persons/:id", (request, response) => {
   }
 })
 
+/** Add a new person in phonebook */
 app.post("/api/persons", (request, response) => {
   if (!request.body["name"] || !request.body["phone"]) {
     return response.status(400).json({ error: "Invalid arguments: 'name' and 'phone' required!" })
@@ -46,11 +53,17 @@ app.post("/api/persons", (request, response) => {
   return response.json(newPerson)
 })
 
+/** Delete a person by id in phonebook */
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter((p) => p.id !== id)
 
   response.end()
+})
+
+/** Catch all unknown endpoints */
+app.use((request, response) => {
+  response.status(404).send({ error: "unknown endpoint" })
 })
 
 const PORT = 3001
