@@ -5,9 +5,12 @@ const store = require("./store/persons.json")
 let persons = store.persons
 
 const app = express()
-
-app.use(morgan('tiny'))
 app.use(express.json())
+
+morgan.token("args", (request, response) => {
+  return JSON.stringify(request.body)
+})
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :args"))
 
 /** Get infos about phonebook */
 app.get("/info", (request, response) => {
