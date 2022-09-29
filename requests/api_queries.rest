@@ -25,3 +25,26 @@ delete http://localhost:3001/api/persons/2
 
 # Delete unknown person (idempotent)
 delete http://localhost:3001/api/persons/852741
+
+###
+
+# Create new person
+
+POST http://localhost:3001/api/persons
+Content-type: application/json
+
+{
+    "name": "John Doe",
+    "phone": "457-78648-5745648"
+}
+
+###
+
+# Create new person without required arguments
+
+POST http://localhost:3001/api/persons
+Content-type: application/json
+
+{
+    "name": "John Doe"
+}
