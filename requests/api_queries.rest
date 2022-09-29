@@ -1,3 +1,7 @@
 # Get Persons
 http://localhost:3001/api/persons
 
+###
+
+# Get infos
+http://localhost:3001/info
