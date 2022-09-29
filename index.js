@@ -1,11 +1,16 @@
 const express = require("express")
 const morgan = require("morgan")
+const cors = require("cors")
 
 const store = require("./store/persons.json")
 let persons = store.persons
 
 const app = express()
+app.use(cors())
 app.use(express.json())
+
+// Serve Frontend files
+app.use(express.static("build"))
 
 morgan.token("args", (request, response) => {
   return JSON.stringify(request.body)
@@ -69,7 +74,7 @@ app.use((request, response) => {
   response.status(404).send({ error: "unknown endpoint" })
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

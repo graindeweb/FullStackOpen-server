@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:ui": "cd ../FullStackOpen/part2/phonebook && npm run build && cp -R build/ /srv/nodejs/FullStackOpen-server",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
