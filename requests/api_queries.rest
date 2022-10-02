@@ -5,7 +5,7 @@ http://localhost:3001/api/persons
 http://localhost:3001/info
 
 ### Get Person infos
-http://localhost:3001/api/persons/633a062461acbbc0a3802a5d
+http://localhost:3001/api/persons/633a088c6e8188dd542652ad
 
 ### Get unknown person infos (404)
 http://localhost:3001/api/persons/633a060261acbbc0a3802a59
@@ -37,6 +37,15 @@ Content-type: application/json
 
 {
     "name": "John Doe"
+}
+
+### Update person
+PUT http://localhost:3001/api/persons/633a088c6e8188dd542652ad
+Content-type: application/json
+
+{
+    "name": "Marc BUFALO (edited)",
+    "phone": "123456789"
 }
 
 ### Unknown endpoint

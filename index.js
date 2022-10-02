@@ -59,9 +59,12 @@ app.post("/api/persons", (request, response) => {
 
   Person.find({ name: request.body.name })
     .then((matchingPersons) => {
-      // if (matchingPersons.length) {
-      //   return response.status(409).json({ error: "name must be unique!" })
-      // }
+      if (matchingPersons.length) {
+        return response.status(409).json({ 
+          error: "name must be unique!", 
+          person: matchingPersons[0] 
+        })
+      }
 
       const person = new Person({
         name: request.body.name,
@@ -83,6 +86,20 @@ app.post("/api/persons", (request, response) => {
       console.log("An Error occured on create: ", err.message)
       response.status(500).end()
     })
+})
+
+/** Update existing person */
+app.put(`/api/persons/:id`, (request, response, next) => {
+  const id = request.params.id
+
+  const person = {
+    name: request.body.name,
+    phone: request.body.phone,
+  }
+
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then((udpatedPerson) => response.json(udpatedPerson))
+    .catch((err) => next(err))
 })
 
 /** Delete a person by id in phonebook */
