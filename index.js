@@ -29,51 +29,74 @@ app.get("/info", (request, response) => {
 
 /** Get all persons in phonebook */
 app.get("/api/persons", (request, response) => {
-  Person.find({}).then((persons) => response.json(persons))
+  Person.find({})
+    .then((persons) => response.json(persons))
+    .catch((err) => {
+      console.log(err)
+      response.status(500).end()
+    })
 })
 
 /** Get person's details */
 app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id
-  const person = Person.findById(id).then((person) => {
-    if (person) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
-  })
+  const person = Person.findById(id)
+    .then((person) => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      response.status(400).send({error: 'Malformed id'})
+    })
 })
 
 /** Add a new person in phonebook */
 app.post("/api/persons", (request, response) => {
-  if (!request.body["name"] || !request.body["phone"]) {
-    return response.status(400).json({ error: "Invalid arguments: 'name' and 'phone' required!" })
-  }
+    if (!request.body["name"] || !request.body["phone"]) {
+      return response.status(400).json({ error: "Invalid arguments: 'name' and 'phone' required!" })
+    }
 
-  Person.find({ name: request.body.name }).then((matchingPersons) => {
-    // if (matchingPersons.length) {
-    //   return response.status(409).json({ error: "name must be unique!" })
-    // }
+    Person.find({ name: request.body.name })
+      .then((matchingPersons) => {
+        // if (matchingPersons.length) {
+        //   return response.status(409).json({ error: "name must be unique!" })
+        // }
 
-    const person = new Person({
-      name: request.body.name,
-      phone: request.body.phone,
-    })
+        const person = new Person({
+          name: request.body.name,
+          phone: request.body.phone,
+        })
 
-    person
-      .save()
-      .then((newPerson) => {
-        console.log("person saved with id:", newPerson.id)
-        return response.json(newPerson)
+        person.save()
+          .then((newPerson) => {
+            console.log("person saved with id:", newPerson.id)
+            return response.json(newPerson)
+          })
+          .catch((err) => {
+            console.log("An Error occured on create: ", err.message)
+            response.status(500).end()
+          })
       })
-      .catch((err) => console.log("An Error occured on create: ", err.message))
+      .catch((err) => {
+        console.log("An Error occured on create: ", err.message)
+        response.status(500).end()
+      })
   })
-})
+  
 
 /** Delete a person by id in phonebook */
 app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id
-  Person.findByIdAndDelete(id).then(() => response.end())
+  Person.findByIdAndDelete(id)
+    .then(() => response.status(204).end())
+    .catch((err) => {
+      console.log(err)
+      response.status(400).send({ error: "Malformed id" })
+    })
 })
 
 /** Catch all unknown endpoints */

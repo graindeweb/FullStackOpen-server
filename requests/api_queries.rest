@@ -1,35 +1,28 @@
-# Get Persons
+### Get Persons
 http://localhost:3001/api/persons
 
-###
-
-# Get infos
+### Get infos
 http://localhost:3001/info
 
-### 
+### Get Person infos
+http://localhost:3001/api/persons/633a062461acbbc0a3802a5d
 
-# Get Person infos
-http://localhost:3001/api/persons/633a060261acbbc0a3802a58
-
-###
-
-# Get unknown person infos (404)
+### Get unknown person infos (404)
 http://localhost:3001/api/persons/633a060261acbbc0a3802a59
 
-### 
+### Get person with malformed id (400)
+http://localhost:3001/api/persons/633
 
-# Delete person (idempotent)
+### Delete person (idempotent)
+delete http://localhost:3001/api/persons/633a062461acbbc0a3802a5d
+
+### Delete unknown person (idempotent)
 delete http://localhost:3001/api/persons/633a060261acbbc0a3802a58
 
-###
+### Delete with malformed id
+delete http://localhost:3001/api/persons/633
 
-# Delete unknown person (idempotent)
-delete http://localhost:3001/api/persons/633a060261acbbc0a3802a58
-
-###
-
-# Create new person
-
+### Create new person
 POST http://localhost:3001/api/persons
 Content-type: application/json
 
@@ -38,10 +31,7 @@ Content-type: application/json
     "phone": "457-78648-5745648"
 }
 
-###
-
-# Create new person without required arguments
-
+### Create new person without required arguments
 POST http://localhost:3001/api/persons
 Content-type: application/json
 
@@ -49,7 +39,5 @@ Content-type: application/json
     "name": "John Doe"
 }
 
-###
-
-# Unknown endpoint
+### Unknown endpoint
 GET http://localhost:3001/api/nobody
