@@ -52,24 +52,22 @@ app.get("/api/persons/:id", (request, response, next) => {
 })
 
 /** Add a new person in phonebook */
-app.post("/api/persons", (request, response) => {
-  if (!request.body["name"] || !request.body["phone"]) {
+app.post("/api/persons", (request, response, next) => {
+  const { name, phone } = request.body
+  if (!name || !phone) {
     return response.status(400).json({ error: "Invalid arguments: 'name' and 'phone' required!" })
   }
 
   Person.find({ name: request.body.name })
     .then((matchingPersons) => {
       if (matchingPersons.length) {
-        return response.status(409).json({ 
-          error: "name must be unique!", 
-          person: matchingPersons[0] 
+        return response.status(409).json({
+          error: "name must be unique!",
+          person: matchingPersons[0],
         })
       }
 
-      const person = new Person({
-        name: request.body.name,
-        phone: request.body.phone,
-      })
+      const person = new Person({ name, phone })
 
       person
         .save()
@@ -77,10 +75,7 @@ app.post("/api/persons", (request, response) => {
           console.log("person saved with id:", newPerson.id)
           return response.json(newPerson)
         })
-        .catch((err) => {
-          console.log("An Error occured on create: ", err.message)
-          response.status(500).end()
-        })
+        .catch((err) => next(err))
     })
     .catch((err) => {
       console.log("An Error occured on create: ", err.message)
@@ -91,13 +86,13 @@ app.post("/api/persons", (request, response) => {
 /** Update existing person */
 app.put(`/api/persons/:id`, (request, response, next) => {
   const id = request.params.id
+  const { name, phone } = request.body
 
-  const person = {
-    name: request.body.name,
-    phone: request.body.phone,
-  }
-
-  Person.findByIdAndUpdate(id, person, { new: true })
+  Person.findByIdAndUpdate(
+    id,
+    { name, phone },
+    { new: true, runValidators: true, context: "query" }
+  )
     .then((udpatedPerson) => response.json(udpatedPerson))
     .catch((err) => next(err))
 })
@@ -121,6 +116,8 @@ app.use((error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "Malformatted id" })
+  } else if (error.name === "ValidationError") {
+    return response.status(400).send({ error: error.message })
   }
 
   next(error)
