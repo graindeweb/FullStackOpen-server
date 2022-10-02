@@ -4,7 +4,7 @@ const password = process.argv[2]
 if (typeof password === "undefined") {
   return console.log("You must give the mongo database password as argument")
 }
-mongoURL = `mongodb+srv://fullopenpart3:${password}@cluster0.srov4z9.mongodb.net/?retryWrites=true&w=majority`
+mongoURL = `mongodb+srv://fullopenpart3:${password}@cluster0.srov4z9.mongodb.net/phonebookApp?retryWrites=true&w=majority`
 
 personSchema = mongoose.Schema({
   name: String,
@@ -34,4 +34,4 @@ mongoose
       })
     }
   })
-  .catch((err) => console.log(`An error occured: ${err}`))
+  .catch((err) => console.log("An error occured:", err.message))

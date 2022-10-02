@@ -1,9 +1,0 @@
-{
-  "persons": [
-    { "name": "Arto Hellas", "phone": "0659142631", "id": 1 },
-    { "name": "John DOE", "phone": "0612345678", "id": 2 },
-    { "name": "Johnny WEISSMULLER", "phone": "0699887744", "id": 3 },
-    { "name": "Gary GRANT", "phone": "0612211221", "id": 4 },
-    { "name": "John WAYNE", "phone": "0601020304", "id": 5 }
-  ]
-}

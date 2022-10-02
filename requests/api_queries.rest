@@ -9,22 +9,22 @@ http://localhost:3001/info
 ### 
 
 # Get Person infos
-http://localhost:3001/api/persons/2
+http://localhost:3001/api/persons/633a060261acbbc0a3802a58
 
 ###
 
 # Get unknown person infos (404)
-http://localhost:3001/api/persons/78964
+http://localhost:3001/api/persons/633a060261acbbc0a3802a59
 
 ### 
 
 # Delete person (idempotent)
-delete http://localhost:3001/api/persons/2
+delete http://localhost:3001/api/persons/633a060261acbbc0a3802a58
 
 ###
 
 # Delete unknown person (idempotent)
-delete http://localhost:3001/api/persons/852741
+delete http://localhost:3001/api/persons/633a060261acbbc0a3802a58
 
 ###
 
@@ -34,7 +34,7 @@ POST http://localhost:3001/api/persons
 Content-type: application/json
 
 {
-    "name": "John Doe",
+    "name": "Marc BUFALO",
     "phone": "457-78648-5745648"
 }
 
