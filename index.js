@@ -12,7 +12,7 @@ app.use(express.json())
 // Serve Frontend files
 app.use(express.static("build"))
 
-morgan.token("args", (request, response) => {
+morgan.token("args", (request) => {
   return JSON.stringify(request.body)
 })
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :args"))
@@ -40,7 +40,7 @@ app.get("/api/persons", (request, response) => {
 /** Get person's details */
 app.get("/api/persons/:id", (request, response, next) => {
   const id = request.params.id
-  const person = Person.findById(id)
+  Person.findById(id)
     .then((person) => {
       if (person) {
         response.json(person)
@@ -68,7 +68,6 @@ app.post("/api/persons", (request, response, next) => {
       }
 
       const person = new Person({ name, phone })
-
       person
         .save()
         .then((newPerson) => {
@@ -84,7 +83,7 @@ app.post("/api/persons", (request, response, next) => {
 })
 
 /** Update existing person */
-app.put(`/api/persons/:id`, (request, response, next) => {
+app.put("/api/persons/:id", (request, response, next) => {
   const id = request.params.id
   const { name, phone } = request.body
 
@@ -93,7 +92,13 @@ app.put(`/api/persons/:id`, (request, response, next) => {
     { name, phone },
     { new: true, runValidators: true, context: "query" }
   )
-    .then((udpatedPerson) => response.json(udpatedPerson))
+    .then((udpatedPerson) => {
+      if (udpatedPerson) {
+        response.json(udpatedPerson)
+      } else {
+        response.status(404).end()
+      }
+    })
     .catch((err) => next(err))
 })
 

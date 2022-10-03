@@ -40,12 +40,12 @@ Content-type: application/json
 }
 
 ### Update person
-PUT http://localhost:3001/api/persons/633a088c6e8188dd542652ad
+PUT http://localhost:3001/api/persons/633a0fb2a73c3b80278a29di
 Content-type: application/json
 
 {
     "name": "Marc BUFALO (edited)",
-    "phone": "123456789"
+    "phone": "123-456789"
 }
 
 ### Unknown endpoint
